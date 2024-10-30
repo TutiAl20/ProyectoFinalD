@@ -1,41 +1,24 @@
-package com.travel.entity;
+package com.travel.dto.entrada;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.*;
+public class ProductoDto {
+    private String nombre;
+    private String descripcion;
+    private String region;
+    private int cantidad;
+    private double precio;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date fecha; // Puedes usar LocalDate si lo prefieres
+    private int categoria;
+    private List<MultipartFile> imagenes;
 
-// Clase que representa un producto
-@Entity
-public class Producto {
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id; // ID del producto
-
-    private String nombre; // Nombre del producto
-    private String descripcion; // Descripción del producto
-    private String region; // Región donde se ofrece el producto
-    private int cantidad; // Cantidad disponible
-    private double precio; // Precio del producto
-    private Date fecha; // Fecha de disponibilidad del producto
-    private int categoria; // Categoría si es en grupo, solo o mujeres
-
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductoImagen> imagenes;
-
-    public List<ProductoImagen> getImagenes() {
-        return imagenes;
-    }
-
-    public void setImagenes(List<ProductoImagen> imagenes) {
-        this.imagenes = imagenes;
-    }
-
-    public Producto() {}
-
-    // Constructor que inicializa los atributos
-    public Producto(long id, String nombre, String descripcion, String region, int cantidad, double precio, Date fecha, int categoria, List<ProductoImagen> imagenes) {
-        this.id = id;
+    public ProductoDto(){}
+    public ProductoDto(String nombre, String descripcion, String region, int cantidad, double precio, Date fecha, int categoria, List<MultipartFile> imagenes) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.region = region;
@@ -44,14 +27,6 @@ public class Producto {
         this.fecha = fecha;
         this.categoria = categoria;
         this.imagenes = imagenes;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getNombre() {
@@ -109,5 +84,12 @@ public class Producto {
     public void setCategoria(int categoria) {
         this.categoria = categoria;
     }
-    
+
+    public List<MultipartFile> getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(List<MultipartFile> imagenes) {
+        this.imagenes = imagenes;
+    }
 }

@@ -2,21 +2,17 @@ package com.travel.controller;
 
 import java.util.List;
 
+import com.travel.dto.entrada.ProductoDto;
+import com.travel.dto.salida.ProductoSalidaDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.travel.entity.Producto;
 import com.travel.exception.TravelRepositoryException;
 import com.travel.service.ProductoService;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RequestMapping("/travel/productos")
@@ -46,6 +42,7 @@ public class ProductoController {
         return newProducto;
     }
 
+
     @DeleteMapping("/{id}")
     public void deleteProducto(@PathVariable long id )  {
         try {
@@ -54,6 +51,25 @@ public class ProductoController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     
+    }
+
+
+    @PostMapping("/crear")
+    public ResponseEntity<ProductoSalidaDto> crearProducto(@ModelAttribute ProductoDto productoDTO) {
+        ProductoSalidaDto nuevoProducto = productoService.crearProducto(productoDTO);
+        return ResponseEntity.ok(nuevoProducto);
+    }
+
+    @GetMapping("/por-id/{id}")
+    public ResponseEntity<ProductoSalidaDto> listarProductoPorId(@PathVariable("id") Long productoId) {
+        ProductoSalidaDto productoSalidaDto = productoService.listarProductoPorId(productoId);
+        return new ResponseEntity<>(productoSalidaDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<List<ProductoSalidaDto>> listarTodosLosProductos() {
+        List<ProductoSalidaDto> productos = productoService.listarTodosLosProductos();
+        return new ResponseEntity<>(productos, HttpStatus.OK);
     }
     
 }
