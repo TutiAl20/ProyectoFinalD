@@ -85,7 +85,7 @@ public class UsuarioDetailsServiceImpl implements UsuarioDetailsService, UserDet
             user.getContrasena(),
             user.getRoles().stream()
                 .map(role -> new org.springframework.security.core.authority.SimpleGrantedAuthority(role.getName()))
-                .toList()
+                .toList() 
         );
     }
 }
