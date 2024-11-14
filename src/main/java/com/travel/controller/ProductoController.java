@@ -17,7 +17,7 @@ import com.travel.entity.Producto;
 import com.travel.exception.TravelRepositoryException;
 import com.travel.service.ProductoService;
 
-@RequestMapping("/travel/productos")
+@RequestMapping("/travel/public/productos")
 @RestController
 public class ProductoController {
     @Autowired

@@ -1,10 +1,14 @@
 package com.travel.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +18,7 @@ import com.travel.entity.Usuario;
 import com.travel.exception.UserAlreadyExistException;
 import com.travel.service.UsuarioDetailsService;
 
-@RequestMapping("/travel/usuarios")
+@RequestMapping("/travel/admin/usuarios")
 @RestController   // Indica que esta clase es un controlador REST
 public class AuthController {
 
@@ -34,16 +38,30 @@ public class AuthController {
         return "Login Page"; // Puedes retornar una página de login personalizada si lo deseas
     }
 
-    @PostMapping("/")
-     public Usuario registrarUsuario(@RequestBody Usuario usuario) { 
-      Usuario nuevoUsuario = null;
-    try {
-        nuevoUsuario = usuarioDetailsService.registrarUsuario(usuario);
-    } catch (UserAlreadyExistException e) {
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
-    }
-        return nuevoUsuario; 
+    @GetMapping("/listar")
+    public List<Usuario> listarUsuarios() {
+        return usuarioDetailsService.loadAllUsers();
     }
 
-    
+    @PostMapping("/registrar")
+    public Usuario registrarUsuario(@RequestBody Usuario usuario) { 
+        Usuario nuevoUsuario = null;
+        try {
+            nuevoUsuario = usuarioDetailsService.registrarUsuario(usuario);
+        } catch (UserAlreadyExistException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+        return nuevoUsuario; 
+    }    
+
+    @PutMapping("/actualizar")
+    public Usuario actualizarUsuario(@RequestBody Usuario usuario) { 
+        Usuario nuevoUsuario = null;
+        try {
+            nuevoUsuario = usuarioDetailsService.actualizarUsuario(usuario);
+        } catch (UsernameNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+        return nuevoUsuario; 
+    }    
 }

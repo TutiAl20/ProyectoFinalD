@@ -3,12 +3,7 @@ package com.travel.entity;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 // Clase que representa un producto
 @Entity
@@ -25,7 +20,18 @@ public class Producto {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "producto")
     private List<Imagen> imagenes; // Lista para múltiples imágenes del producto
     private Date fecha; // Fecha de disponibilidad del producto
-    private int categoria; // Categoría si es en grupo, solo o mujeres
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
+    @ManyToMany
+    @JoinTable(
+            name = "producto_caracteristicas",
+            joinColumns = @JoinColumn(name = "producto_id"),
+            inverseJoinColumns = @JoinColumn(name = "caracteristica_id")
+    )
+    private List<Caracteristica> caracteristicas;
 
     public long getId() {
         return id;
@@ -91,11 +97,19 @@ public class Producto {
         this.fecha = fecha;
     }
 
-    public int getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(int categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public List<Caracteristica> getCaracteristicas() {
+        return caracteristicas;
+    }
+
+    public void setCaracteristicas(List<Caracteristica> caracteristicas) {
+        this.caracteristicas = caracteristicas;
     }
 }
