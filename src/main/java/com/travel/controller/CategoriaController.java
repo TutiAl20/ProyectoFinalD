@@ -3,6 +3,7 @@ package com.travel.controller;
 
 import com.travel.dto.entrada.CategoriaDto;
 import com.travel.dto.salida.CategoriaSalidaDto;
+import com.travel.entity.Categoria;
 import com.travel.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,5 +52,6 @@ public class CategoriaController {
         categoriaService.eliminar(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 
 }

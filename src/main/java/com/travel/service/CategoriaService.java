@@ -13,4 +13,5 @@ public interface CategoriaService {
     CategoriaSalidaDto  crear(CategoriaDto categoriaDto);
     CategoriaSalidaDto  actualizar(Long id, CategoriaDto categoriaDto);
     void eliminar(Long id);
+
 }

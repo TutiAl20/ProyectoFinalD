@@ -93,4 +93,5 @@ public class CategoriaServiceImpl implements CategoriaService {
         // Eliminar la categoría de la base de datos
         categoriaRepository.delete(categoria);
     }
+
 }
