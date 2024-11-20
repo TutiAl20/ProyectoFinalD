@@ -53,8 +53,8 @@ public class CaracteristicaServiceImpl implements CaracteristicaService {
     @Override
     public CaracteristicaSalidaDto actualizar(Long id, Caracteristica caracteristicaActualizada) {
         Caracteristica caracteristica = obtenerPorId(id);
-        caracteristica.setNombre(caracteristicaActualizada.getNombre());
-        caracteristica.setIcono(caracteristicaActualizada.getIcono());
+        caracteristica.setName(caracteristicaActualizada.getName());
+        caracteristica.setIcon(caracteristicaActualizada.getIcon());
         Caracteristica actualizada = caracteristicaRepository.save(caracteristica);
         return modelMapper.map(actualizada, CaracteristicaSalidaDto.class);
     }
