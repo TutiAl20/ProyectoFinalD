@@ -2,11 +2,17 @@ package com.travel.Auth;
 
 
 import com.travel.Security.Jwt.JwtService;
+import com.travel.dto.entrada.ActualizarUsuarioRolDto;
+import com.travel.dto.salida.UserSalidaDto;
 import com.travel.entity.Role;
 import com.travel.entity.UserEntity;
+import com.travel.exception.NotFoundException;
 import com.travel.repository.RoleRepository;
 import com.travel.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -14,10 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +33,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     private final RoleRepository roleRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     public AuthResponse login(LoginRequest request) {
@@ -85,4 +92,32 @@ public class AuthService {
                 .roles(roles)
                 .build();
     }
+
+    public List<UserSalidaDto> getAllUsers() {
+        List<UserEntity> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserSalidaDto.class))  // Convertimos cada entidad a DTO
+                .collect(Collectors.toList());
+    }
+
+    public UserSalidaDto updateUserRole(ActualizarUsuarioRolDto userDto) {
+        UserEntity user = getUserById(userDto.getUserId());
+
+        Set<Role> newRoles = new HashSet<>();
+        Role role = roleRepository.findByName(userDto.getNuevoRol());
+        if (role == null) {
+            throw new EntityNotFoundException("Rol no encontrado: ");
+        }
+        newRoles.add(role);
+
+        user.setRoles(newRoles);
+        userRepository.save(user);
+        return modelMapper.map(user, UserSalidaDto.class);
+    }
+
+    public UserEntity getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado con id: " + userId));
+    }
+
 }

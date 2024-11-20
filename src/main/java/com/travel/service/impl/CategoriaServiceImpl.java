@@ -53,12 +53,12 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public CategoriaSalidaDto  crear(CategoriaDto categoriaDto) {
         Categoria categoria = new Categoria();
-        categoria.setTitulo(categoriaDto.getTitulo());
+        categoria.setName(categoriaDto.getName());
         categoria.setDescripcion(categoriaDto.getDescripcion());
 
-        if (categoriaDto.getImagenRepresentativa() != null && !categoriaDto.getImagenRepresentativa().isEmpty()) {
-            String imagenUrl = s3Service.subirImagen(categoriaDto.getImagenRepresentativa());
-            categoria.setImagenRepresentativa(imagenUrl);
+        if (categoriaDto.getImage() != null && !categoriaDto.getImage().isEmpty()) {
+            String imagenUrl = s3Service.subirImagen(categoriaDto.getImage());
+            categoria.setImage(imagenUrl);
         }
 
         Categoria categoriaGuardada = categoriaRepository.save(categoria);
@@ -70,13 +70,13 @@ public class CategoriaServiceImpl implements CategoriaService {
         Categoria categoriaExistente =obtenerPorId(id);
 
         // Si hay una nueva imagen, eliminar la anterior y subir la nueva
-        if (categoriaDto.getImagenRepresentativa() != null && !categoriaDto.getImagenRepresentativa().isEmpty()) {
-            s3Service.eliminarImagen(categoriaExistente.getImagenRepresentativa()); // Eliminar la imagen anterior
-            String nuevaImagenUrl = s3Service.subirImagen(categoriaDto.getImagenRepresentativa()); // Subir la nueva
-            categoriaExistente.setImagenRepresentativa(nuevaImagenUrl);
+        if (categoriaDto.getImage() != null && !categoriaDto.getImage().isEmpty()) {
+            s3Service.eliminarImagen(categoriaExistente.getImage()); // Eliminar la imagen anterior
+            String nuevaImagenUrl = s3Service.subirImagen(categoriaDto.getImage()); // Subir la nueva
+            categoriaExistente.setImage(nuevaImagenUrl);
         }
 
-        categoriaExistente.setTitulo(categoriaDto.getTitulo());
+        categoriaExistente.setName(categoriaDto.getName());
         categoriaExistente.setDescripcion(categoriaDto.getDescripcion());
 
         Categoria categoriaActualizada = categoriaRepository.save(categoriaExistente);
@@ -88,7 +88,7 @@ public class CategoriaServiceImpl implements CategoriaService {
         Categoria categoria = obtenerPorId(id);
 
         // Eliminar la imagen asociada del bucket
-        s3Service.eliminarImagen(categoria.getImagenRepresentativa());
+        s3Service.eliminarImagen(categoria.getImage());
 
         // Eliminar la categoría de la base de datos
         categoriaRepository.delete(categoria);
