@@ -20,4 +20,6 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
     @Modifying
     @Query("update Usuario u set u.nombre = ?1, u.apellido = ?2, u.contrasena = ?3 where u.email = ?4")
     void updateUsuario(String nombre, String apellido, String contrasena, String email);
+
+    
 }

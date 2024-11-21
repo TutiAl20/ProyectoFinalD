@@ -3,6 +3,7 @@ package com.travel.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.travel.entity.Usuario;
@@ -16,4 +17,9 @@ public interface UsuarioDetailsService {
     public Usuario registrarUsuario(Usuario usuario) throws UserAlreadyExistException;
 
     public Usuario actualizarUsuario(Usuario usuario) throws UsernameNotFoundException;
+
+    public String getCurrentUserEmail();
+
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException;
+
 }
