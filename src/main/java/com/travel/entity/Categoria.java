@@ -3,13 +3,16 @@ package com.travel.entity;
 
 import jakarta.persistence.*;
 
+
 import java.util.List;
+
 
 @Entity
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
 
     private String titulo;  // Título de la categoría
     private String descripcion;  // Descripción de la categoría
@@ -66,4 +69,7 @@ public class Categoria {
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
     }
+
+
 }
+

@@ -3,6 +3,9 @@ package com.travel.controller;
 
 import com.travel.dto.entrada.CategoriaDto;
 import com.travel.dto.salida.CategoriaSalidaDto;
+
+import com.travel.entity.Categoria;
+
 import com.travel.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+
 @RequestMapping("/travel/public/categorias")
+
 public class CategoriaController {
 
     private final CategoriaService categoriaService;

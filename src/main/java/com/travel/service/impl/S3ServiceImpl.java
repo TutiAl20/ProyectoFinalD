@@ -44,4 +44,6 @@ public class S3ServiceImpl implements S3Service {
             amazonS3.deleteObject(bucketName, key);// Extraer el key
         }
     }
+
 }
+

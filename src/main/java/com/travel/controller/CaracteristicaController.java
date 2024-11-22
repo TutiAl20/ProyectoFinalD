@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+
 @RequestMapping("travel/public/caracteristicas")
+
 public class CaracteristicaController {
 
     private final CaracteristicaService caracteristicaService;

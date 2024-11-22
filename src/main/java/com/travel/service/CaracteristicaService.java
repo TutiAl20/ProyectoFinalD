@@ -12,4 +12,6 @@ public interface CaracteristicaService {
     CaracteristicaSalidaDto  crear(Caracteristica caracteristica);
     CaracteristicaSalidaDto actualizar(Long id, Caracteristica caracteristicaActualizada);
     void eliminar(Long id);
+
 }
+

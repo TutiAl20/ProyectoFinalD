@@ -7,7 +7,6 @@ import com.travel.exception.NotFoundException;
 import com.travel.repository.CaracteristicaRepository;
 import com.travel.service.CaracteristicaService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public class CaracteristicaServiceImpl implements CaracteristicaService {
     private final ModelMapper modelMapper;
     private final CaracteristicaRepository caracteristicaRepository;
 
-    @Autowired
+    
     public CaracteristicaServiceImpl(ModelMapper modelMapper, CaracteristicaRepository caracteristicaRepository) {
         this.modelMapper = modelMapper;
         this.caracteristicaRepository = caracteristicaRepository;
@@ -53,8 +52,11 @@ public class CaracteristicaServiceImpl implements CaracteristicaService {
     @Override
     public CaracteristicaSalidaDto actualizar(Long id, Caracteristica caracteristicaActualizada) {
         Caracteristica caracteristica = obtenerPorId(id);
+
         caracteristica.setNombre(caracteristicaActualizada.getNombre());
         caracteristica.setIcono(caracteristicaActualizada.getIcono());
+
+
         Caracteristica actualizada = caracteristicaRepository.save(caracteristica);
         return modelMapper.map(actualizada, CaracteristicaSalidaDto.class);
     }
@@ -63,4 +65,6 @@ public class CaracteristicaServiceImpl implements CaracteristicaService {
     public void eliminar(Long id) {
         caracteristicaRepository.deleteById(id);
     }
+
 }
+
