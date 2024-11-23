@@ -16,7 +16,7 @@ import com.travel.service.UsuarioDetailsService;
 
 @RequestMapping("/travel/usuarios")
 @RestController   // Indica que esta clase es un controlador REST
-public class AuthController {
+public class AAuthController {
 
     @Autowired
     UsuarioDetailsService usuarioDetailsService;
