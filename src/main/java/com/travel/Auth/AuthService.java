@@ -3,6 +3,7 @@ package com.travel.Auth;
 
 import com.travel.Security.Jwt.JwtService;
 import com.travel.dto.entrada.ActualizarUsuarioRolDto;
+import com.travel.dto.entrada.EmailDto;
 import com.travel.dto.salida.UserSalidaDto;
 import com.travel.dto.salida.UsuarioSalidaDto;
 import com.travel.entity.Role;
@@ -10,10 +11,13 @@ import com.travel.entity.UserEntity;
 import com.travel.exception.NotFoundException;
 import com.travel.repository.RoleRepository;
 import com.travel.repository.UserRepository;
+import com.travel.service.EmailService;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -38,6 +42,14 @@ public class AuthService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    EmailService emailService;
+    @Value("${spring.mail.subject}")
+    private String emailSubject;
+    @Value("${spring.mail.text}")
+    private String emailText;
+    @Value("${spring.mail.from}")
+    private String emailFrom;    
 
     public AuthResponse login(LoginRequest request) {
         try {
@@ -76,6 +88,9 @@ public class AuthService {
 
         UserEntity user = createUserEntity(request, roles);
         userRepository.save(user);
+
+        EmailDto email = new EmailDto(emailFrom, user.getUsername(), emailSubject, emailText);
+        emailService.sendEmail(email);
 
         return AuthResponse.builder()
                 .token(jwtService.getToken(user))
@@ -124,6 +139,15 @@ public class AuthService {
     public UsuarioSalidaDto obtenerUsuarioPorId(Long id) {
         UserEntity user = getUserById(id);
         return new UsuarioSalidaDto(user.getNombre(), user.getApellido(), user.getFecha());
+    }     
+    public boolean deleteUser(String email) {
+        Optional<UserEntity> user = userRepository.findByUsername(email);
+        boolean success = false;
+        if(user.isPresent()) {
+            userRepository.delete(user.get());
+            success = true;
+        } 
+        return success;
     }
 
 }
