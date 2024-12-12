@@ -1,8 +1,7 @@
 package com.travel.controller;
 
-
+import com.travel.dto.entrada.CaracteristicaDto;
 import com.travel.dto.salida.CaracteristicaSalidaDto;
-import com.travel.entity.Caracteristica;
 import com.travel.service.CaracteristicaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,13 +10,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-
-@RequestMapping("travel/public/caracteristicas")
-
+@RequestMapping("/travel/public/caracteristicas")
 public class CaracteristicaController {
 
     private final CaracteristicaService caracteristicaService;
@@ -39,16 +37,21 @@ public class CaracteristicaController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<CaracteristicaSalidaDto> crear(@RequestBody Caracteristica caracteristica) {
+    public ResponseEntity<CaracteristicaSalidaDto> crear(@ModelAttribute CaracteristicaDto caracteristicaDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
-        return new ResponseEntity<>(caracteristicaService.crear(currentUserName,caracteristica), HttpStatus.CREATED);
+
+        CaracteristicaSalidaDto nuevaCaracteristica = caracteristicaService.crear(currentUserName, caracteristicaDto);
+        return new ResponseEntity<>(nuevaCaracteristica, HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<CaracteristicaSalidaDto> actualizar(@PathVariable Long id, @RequestBody Caracteristica caracteristica) {
-        return new ResponseEntity<>(caracteristicaService.actualizar(id, caracteristica), HttpStatus.OK);
+    public ResponseEntity<CaracteristicaSalidaDto> actualizar(
+            @PathVariable Long id,
+            @ModelAttribute CaracteristicaDto caracteristicaDto) {
+        CaracteristicaSalidaDto caracteristicaActualizada = caracteristicaService.actualizar(id, caracteristicaDto);
+        return new ResponseEntity<>(caracteristicaActualizada, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
