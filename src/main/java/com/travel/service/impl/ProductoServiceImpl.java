@@ -150,13 +150,15 @@ public class ProductoServiceImpl implements ProductoService {
                 .collect(Collectors.toList());
     }
 
-    public List<ProductoSalidaDto> obtenerProductosDisponiblesPorRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFinal) {
-        // Llamamos al repositorio con la consulta mejorada que ordena por la cantidad de fechas disponibles
-        List<Producto> productosBusqueda = productoRepository.findProductosDisponiblesPorRangoDeFechasConContadorYFechaCercana(fechaInicio, fechaFinal);
+
+    public List<ProductoSalidaDto> obtenerProductosDisponiblesPorRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFinal, String query) {
+        // Llamamos al repositorio con la consulta mejorada que incluye filtro por nombre o descripción
+        List<Producto> productosBusqueda = productoRepository.findProductosDisponiblesPorRangoDeFechasConContadorYFechaCercana(fechaInicio, fechaFinal, query);
         return productosBusqueda.stream()
                 .map(this::convertirAProductoSalidaDto)
                 .collect(Collectors.toList());
     }
+
 
 
 

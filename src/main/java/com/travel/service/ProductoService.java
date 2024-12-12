@@ -12,6 +12,6 @@ public interface ProductoService {
     ProductoSalidaDto listarProductoPorId(Long id);
     void eliminar(Long id);
     List<ProductoSalidaDto> obtenerProductosPorCategoria(Long categoriaId);
-    List<ProductoSalidaDto> obtenerProductosDisponiblesPorRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFinal);
+    List<ProductoSalidaDto> obtenerProductosDisponiblesPorRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFinal, String query);
 }
 

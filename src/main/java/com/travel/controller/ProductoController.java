@@ -61,9 +61,11 @@ public class ProductoController {
     @GetMapping("/disponibles")
     public ResponseEntity<List<ProductoSalidaDto>> obtenerProductosDisponibles(
             @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-            @RequestParam("fechaFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFinal) {
+            @RequestParam("fechaFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFinal,
+            @RequestParam(value = "query", required = false) String query) {
 
-        List<ProductoSalidaDto> productos = productoService.obtenerProductosDisponiblesPorRangoDeFechas(fechaInicio, fechaFinal);
+        List<ProductoSalidaDto> productos = productoService.obtenerProductosDisponiblesPorRangoDeFechas(fechaInicio, fechaFinal, query);
         return new ResponseEntity<>(productos, HttpStatus.OK);
     }
+
 }
