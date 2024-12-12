@@ -21,4 +21,7 @@ public class ProductoSalidaDto {
     private CategoriaSalidaDto categoria; // Información de la categoría
     private List<CaracteristicaSalidaDto> caracteristicas; // Informacion de características
     private List<FechaDisponibleDto> fechasDisponibles;
+
+    private double puntuacionMedia;
+    private long totalResenas;
 }

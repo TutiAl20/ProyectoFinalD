@@ -44,4 +44,8 @@ public class Producto {
     @JoinColumn(name = "user_id")
     private UserEntity usuario; // Relación con el usuario que crea el producto
 
+
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<Review> valoraciones;
+
 }

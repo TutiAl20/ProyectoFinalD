@@ -15,6 +15,7 @@ import com.travel.service.EmailService;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,13 +32,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-
     private final RoleRepository roleRepository;
+
+
+}
 
     @Autowired
     private ModelMapper modelMapper;
@@ -140,6 +142,7 @@ public class AuthService {
         UserEntity user = getUserById(id);
         return new UsuarioSalidaDto(user.getNombre(), user.getApellido(), user.getFecha());
     }     
+
     public boolean deleteUser(String email) {
         Optional<UserEntity> user = userRepository.findByUsername(email);
         boolean success = false;
@@ -150,4 +153,4 @@ public class AuthService {
         return success;
     }
 
-}
+    }
