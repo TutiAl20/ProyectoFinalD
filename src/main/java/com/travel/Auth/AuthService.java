@@ -90,7 +90,8 @@ public class AuthService {
 
         UserEntity user = createUserEntity(request, roles);
         userRepository.save(user);
-
+        
+        emailText = emailText.replace("{1}",user.getNombre()+" "+user.getApellido()).replace("{2}",user.getUsername());
         EmailDto email = new EmailDto(emailFrom, user.getUsername(), emailSubject, emailText);
         emailService.sendEmail(email);
 
