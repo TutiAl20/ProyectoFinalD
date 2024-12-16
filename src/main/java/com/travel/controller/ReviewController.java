@@ -3,7 +3,6 @@ package com.travel.controller;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,15 +27,21 @@ public class ReviewController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{productoId}")
-    public ResponseEntity<ReviewSalidaDto> crearResena(@PathVariable Long productoId, @RequestBody ReviewDto reviewDto, Authentication authentication) {
-        String username = authentication.name();
-        ReviewSalidaDto respuesta = reviewService.agregarResena(username, productoId, reviewDto);
+    public ResponseEntity<ReviewSalidaDto> crearResena(@PathVariable Long productoId, @RequestBody ReviewDto reviewDto) {
+        reviewDto.setIdProducto(productoId);
+        ReviewSalidaDto respuesta = reviewService.agregarResena(reviewDto);
         return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
     }
 
     @GetMapping("/{productoId}")
     public ResponseEntity<List<ReviewSalidaDto>> listarResenas(@PathVariable Long productoId) {
         List<ReviewSalidaDto> resenas = reviewService.listarResenasPorProducto(productoId);
+        return ResponseEntity.ok(resenas);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<ReviewSalidaDto>> listarResenas() {
+        List<ReviewSalidaDto> resenas = reviewService.listarResenas();
         return ResponseEntity.ok(resenas);
     }
 }
