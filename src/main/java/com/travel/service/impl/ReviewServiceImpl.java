@@ -46,17 +46,17 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public ReviewSalidaDto agregarResena(String username, Long productoId, ReviewDto reviewDto) {
-        UserEntity usuario = userRepository.findByUsername(username)
+    public ReviewSalidaDto agregarResena(ReviewDto reviewDto) {
+        UserEntity usuario = userRepository.findByUsername(reviewDto.getUsuario())
             .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 
-        Producto producto = productoRepository.findById(productoId)
+        Producto producto = productoRepository.findById(reviewDto.getIdProducto())
             .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
 
 
 
         // Verificar que el usuario haya completado una reserva de este producto.
-        boolean haReservado = reservaRepository.findByUsuario(usuario).stream().anyMatch(reserva -> reserva.getFechaTour().getProducto().getId().equals(productoId));
+        boolean haReservado = reservaRepository.findByUsuario(usuario).stream().anyMatch(reserva -> reserva.getFechaTour().getProducto().getId().equals(reviewDto.getIdProducto()));
 
         if (!haReservado) {
             throw new IllegalArgumentException("No puedes reseñar un producto que no has reservado.");
@@ -77,6 +77,14 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<ReviewSalidaDto> listarResenasPorProducto(Long productoId) {
         List<Review> reviews = reviewRepository.findByProductoId(productoId);
+        return reviews.stream()
+            .map(this::mapearReviewASalidaDto)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReviewSalidaDto> listarResenas() {
+        List<Review> reviews = reviewRepository.findAll();
         return reviews.stream()
             .map(this::mapearReviewASalidaDto)
             .collect(Collectors.toList());
