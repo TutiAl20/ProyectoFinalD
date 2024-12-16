@@ -39,8 +39,6 @@ public class AuthService {
     private final RoleRepository roleRepository;
 
 
-}
-
     @Autowired
     private ModelMapper modelMapper;
 
@@ -51,7 +49,7 @@ public class AuthService {
     @Value("${spring.mail.text}")
     private String emailText;
     @Value("${spring.mail.from}")
-    private String emailFrom;    
+    private String emailFrom;
 
     public AuthResponse login(LoginRequest request) {
         try {
@@ -62,8 +60,8 @@ public class AuthService {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
                 String token = jwtService.getToken(user);
                 return AuthResponse.builder()
-                            .token(token)
-                            .build();
+                        .token(token)
+                        .build();
 
             } else {
                 return AuthResponse.builder()
@@ -90,7 +88,7 @@ public class AuthService {
 
         UserEntity user = createUserEntity(request, roles);
         userRepository.save(user);
-        
+
         emailText = emailText.replace("{1}",user.getNombre()+" "+user.getApellido()).replace("{2}",user.getUsername());
         EmailDto email = new EmailDto(emailFrom, user.getUsername(), emailSubject, emailText);
         emailService.sendEmail(email);
@@ -142,7 +140,7 @@ public class AuthService {
     public UsuarioSalidaDto obtenerUsuarioPorId(Long id) {
         UserEntity user = getUserById(id);
         return new UsuarioSalidaDto(user.getNombre(), user.getApellido(), user.getFecha());
-    }     
+    }
 
     public boolean deleteUser(String email) {
         Optional<UserEntity> user = userRepository.findByUsername(email);
@@ -150,8 +148,8 @@ public class AuthService {
         if(user.isPresent()) {
             userRepository.delete(user.get());
             success = true;
-        } 
+        }
         return success;
     }
 
-    }
+}

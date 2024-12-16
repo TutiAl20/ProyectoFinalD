@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.amazonaws.services.kms.model.NotFoundException;
-import com.travel.dto.entrada.ReviewSalidaDto;
+import com.travel.dto.salida.ReviewSalidaDto;
 import com.travel.entity.Producto;
 import com.travel.entity.Review;
 import com.travel.entity.UserEntity;
@@ -16,7 +16,7 @@ import com.travel.repository.ProductoRepository;
 import com.travel.repository.ReservaRepository;
 import com.travel.repository.ReviewRepository;
 import com.travel.repository.UserRepository;
-import com.travel.service.ReviewDto;
+import com.travel.dto.entrada.ReviewDto;
 import com.travel.service.ReviewService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -53,11 +53,10 @@ public class ReviewServiceImpl implements ReviewService {
         Producto producto = productoRepository.findById(productoId)
             .orElseThrow(() -> new NotFoundException("Producto no encontrado"));
 
-            throw new UnsupportedOperationException("Unimplemented method 'agregarResena'");
+
 
         // Verificar que el usuario haya completado una reserva de este producto.
-        boolean haReservado = reservaRepository.findByUsuario(usuario).stream()
-            .anyMatch(reserva -> reserva.getFechaTour().getProducto().getId().equals(productoId));
+        boolean haReservado = reservaRepository.findByUsuario(usuario).stream().anyMatch(reserva -> reserva.getFechaTour().getProducto().getId().equals(productoId));
 
         if (!haReservado) {
             throw new IllegalArgumentException("No puedes reseñar un producto que no has reservado.");

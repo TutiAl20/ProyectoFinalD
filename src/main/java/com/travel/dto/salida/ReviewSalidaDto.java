@@ -1,4 +1,4 @@
-package com.travel.dto.entrada;
+package com.travel.dto.salida;
 
 import java.time.LocalDateTime;
 

@@ -1,11 +1,9 @@
 package com.travel.controller;
 
 import java.util.List;
-
-import org.apache.http.HttpStatus;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.travel.dto.entrada.ReviewSalidaDto;
-import com.travel.service.ReviewDto;
+import com.travel.dto.salida.ReviewSalidaDto;
+import com.travel.dto.entrada.ReviewDto;
 import com.travel.service.ReviewService;
 
 @RestController
@@ -42,6 +40,3 @@ public class ReviewController {
         return ResponseEntity.ok(resenas);
     }
 }
-
-
-
