@@ -1,13 +1,10 @@
 package com.travel.dto.entrada;
 
-import java.time.LocalDateTime;
-
 public class ReviewDto {
     private int puntuacion;
     private String comentario;
-    private LocalDateTime fechaPublicacion;
-    private String nombreUsuario;
-    private String apellidoUsuario;
+    private String usuario;
+    private Long idProducto;
 
     public int getPuntuacion() {
         return puntuacion;
@@ -25,27 +22,20 @@ public class ReviewDto {
         this.comentario = comentario;
     }
 
-    public LocalDateTime getFechaPublicacion() {
-        return fechaPublicacion;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setFechaPublicacion(LocalDateTime fechaPublicacion) {
-        this.fechaPublicacion = fechaPublicacion;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public Long getIdProducto() {
+        return idProducto;
     }
 
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
-    }
-
-    public String getApellidoUsuario() {
-        return apellidoUsuario;
-    }
-
-    public void setApellidoUsuario(String apellidoUsuario) {
-        this.apellidoUsuario = apellidoUsuario;
+    public void setIdProducto(Long idProducto) {
+        this.idProducto = idProducto;
     }
 }
+
